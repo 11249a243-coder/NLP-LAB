@@ -1,0 +1,1777 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM+SXi/AkACuOk+LAtmjFq8",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/11249a243-coder/NLP-LAB/blob/main/Nlp%20programs\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "v35F8whm-EAQ",
+        "outputId": "efc3c2d3-bb76-4c61-d4d5-ec2d535c335f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Tokens: 12\n",
+            "Lowercase Types: 7\n",
+            "Case Preserved Types: 8\n",
+            "TTR: 0.58\n"
+          ]
+        }
+      ],
+      "source": [
+        "text = \"The cat sat on the mat. The dog sat on the log.\"\n",
+        "\n",
+        "words = text.replace(\".\", \"\").split()\n",
+        "\n",
+        "lower_words = [w.lower() for w in words]\n",
+        "\n",
+        "tokens = len(words)\n",
+        "types_lower = len(set(lower_words))\n",
+        "types_case = len(set(words))\n",
+        "\n",
+        "ttr = types_lower / tokens\n",
+        "\n",
+        "print(\"Tokens:\", tokens)\n",
+        "print(\"Lowercase Types:\", types_lower)\n",
+        "print(\"Case Preserved Types:\", types_case)\n",
+        "print(\"TTR:\", round(ttr, 2))"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q2. Tokenizing a Social-Media Post\n"
+      ],
+      "metadata": {
+        "id": "NbmtRGhH_q5g"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.tokenize import TweetTokenizer\n",
+        "\n",
+        "text = \"OMG!! Can't wait for #NLP2026 @IITM :) Tickets cost $4.5k, e-mail me at ravi@example.com\"\n",
+        "\n",
+        "tokenizer = TweetTokenizer()\n",
+        "tokens = tokenizer.tokenize(text)\n",
+        "\n",
+        "print(\"Tokens:\")\n",
+        "print(tokens)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3SIsVbOp-0Fp",
+        "outputId": "c19763ed-467a-4bb8-ceb2-4807207a9c5b"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Tokens:\n",
+            "['OMG', '!', '!', \"Can't\", 'wait', 'for', '#NLP2026', '@IITM', ':)', 'Tickets', 'cost', '$', '4.5', 'k', ',', 'e-mail', 'me', 'at', 'ravi@example.com']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q3. Query Normalisation using Stemming and Lemmatization\n"
+      ],
+      "metadata": {
+        "id": "OPT984j-_xGX"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.stem import PorterStemmer, WordNetLemmatizer\n",
+        "\n",
+        "nltk.download('wordnet')\n",
+        "\n",
+        "words = [\"running\", \"ran\", \"runs\", \"runner\", \"runners\"]\n",
+        "\n",
+        "stemmer = PorterStemmer()\n",
+        "lemmatizer = WordNetLemmatizer()\n",
+        "\n",
+        "for word in words:\n",
+        "    print(word, \"Stem:\", stemmer.stem(word),\n",
+        "          \"Lemma:\", lemmatizer.lemmatize(word, pos='v'))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9V3WGNf3Al0-",
+        "outputId": "cf6336de-c1e2-4abe-b424-260a8e3828fb"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package wordnet to /root/nltk_data...\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "running Stem: run Lemma: run\n",
+            "ran Stem: ran Lemma: run\n",
+            "runs Stem: run Lemma: run\n",
+            "runner Stem: runner Lemma: runner\n",
+            "runners Stem: runner Lemma: runners\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "k = 120000\n",
+        "\n",
+        "ranks = [1, 2, 10, 100, 50000]\n",
+        "\n",
+        "for r in ranks:\n",
+        "    frequency = k / r\n",
+        "    print(\"Rank:\", r, \"Frequency:\", frequency)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PV7XJagvBGCH",
+        "outputId": "04797a80-98b5-4df2-a2f7-34a478842d73"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Rank: 1 Frequency: 120000.0\n",
+            "Rank: 2 Frequency: 60000.0\n",
+            "Rank: 10 Frequency: 12000.0\n",
+            "Rank: 100 Frequency: 1200.0\n",
+            "Rank: 50000 Frequency: 2.4\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q5. Code-Mixed Customer Chat\n"
+      ],
+      "metadata": {
+        "id": "dbxmp1wqBUO-"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "text = \"Kal ka meeting cancel ho gaya please reschedule it by Friday\"\n",
+        "\n",
+        "hindi = [\"Kal\", \"ka\", \"ho\", \"gaya\"]\n",
+        "\n",
+        "words = text.split()\n",
+        "\n",
+        "for word in words:\n",
+        "    if word in hindi:\n",
+        "        print(word, \"- Hindi\")\n",
+        "    else:\n",
+        "        print(word, \"- English\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gLYWNXLdBVf-",
+        "outputId": "1cb7e6aa-5983-46e0-ae11-59e6bacf0df3"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Kal - Hindi\n",
+            "ka - Hindi\n",
+            "meeting - English\n",
+            "cancel - English\n",
+            "ho - Hindi\n",
+            "gaya - Hindi\n",
+            "please - English\n",
+            "reschedule - English\n",
+            "it - English\n",
+            "by - English\n",
+            "Friday - English\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "UNIT 2 – WORD GENERATION\n"
+      ],
+      "metadata": {
+        "id": "uBY2BQ8VByOV"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q6. Plural Word Generator"
+      ],
+      "metadata": {
+        "id": "L03OzPl5CcEN"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [\"box\", \"city\", \"child\", \"boy\", \"bus\", \"knife\"]\n",
+        "\n",
+        "irregular = {\n",
+        "    \"child\": \"children\",\n",
+        "    \"knife\": \"knives\"\n",
+        "}\n",
+        "\n",
+        "for word in words:\n",
+        "    if word in irregular:\n",
+        "        plural = irregular[word]\n",
+        "    elif word.endswith((\"s\", \"x\", \"z\", \"ch\", \"sh\")):\n",
+        "        plural = word + \"es\"\n",
+        "    elif word.endswith(\"y\") and word[-2] not in \"aeiou\":\n",
+        "        plural = word[:-1] + \"ies\"\n",
+        "    else:\n",
+        "        plural = word + \"s\"\n",
+        "\n",
+        "    print(word, \"->\", plural)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yvihae1LBzoF",
+        "outputId": "51a7ba8e-5812-40f3-e098-4944df044e50"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "box -> boxes\n",
+            "city -> cities\n",
+            "child -> children\n",
+            "boy -> boys\n",
+            "bus -> buses\n",
+            "knife -> knives\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q7. Verb Forms Generator"
+      ],
+      "metadata": {
+        "id": "EUl6UuVpChzs"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [\n",
+        "    (\"write\", \"VBD\"),\n",
+        "    (\"write\", \"VBN\"),\n",
+        "    (\"stop\", \"VBG\"),\n",
+        "    (\"study\", \"VBZ\"),\n",
+        "    (\"die\", \"VBG\"),\n",
+        "    (\"play\", \"VBD\")\n",
+        "]\n",
+        "\n",
+        "forms = {\n",
+        "    (\"write\", \"VBD\"): \"wrote\",\n",
+        "    (\"write\", \"VBN\"): \"written\",\n",
+        "    (\"stop\", \"VBG\"): \"stopping\",\n",
+        "    (\"study\", \"VBZ\"): \"studies\",\n",
+        "    (\"die\", \"VBG\"): \"dying\",\n",
+        "    (\"play\", \"VBD\"): \"played\"\n",
+        "}\n",
+        "\n",
+        "for word, tag in words:\n",
+        "    print(word, tag, \"->\", forms[(word, tag)])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gTFj7ikfClq8",
+        "outputId": "5cb223d9-2ebe-4fb4-e757-3a49d1a16872"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "write VBD -> wrote\n",
+            "write VBN -> written\n",
+            "stop VBG -> stopping\n",
+            "study VBZ -> studies\n",
+            "die VBG -> dying\n",
+            "play VBD -> played\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q8. Finite State Transducer for English Plurals"
+      ],
+      "metadata": {
+        "id": "ctqE7t8WDQaE"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [\"fox\", \"cat\", \"church\", \"wish\", \"boy\"]\n",
+        "\n",
+        "for word in words:\n",
+        "    if word.endswith((\"x\", \"s\", \"z\", \"ch\", \"sh\")):\n",
+        "        plural = word + \"es\"\n",
+        "    else:\n",
+        "        plural = word + \"s\"\n",
+        "\n",
+        "    print(word, \"->\", plural)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LqEhnfOXDRZb",
+        "outputId": "1244769f-4e4f-426b-8265-cfc57a0e0ae1"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "fox -> foxes\n",
+            "cat -> cats\n",
+            "church -> churches\n",
+            "wish -> wishes\n",
+            "boy -> boys\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q9. Tamil Noun Forms\n"
+      ],
+      "metadata": {
+        "id": "FeKW5DHDDpTj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "word = \"maram\"\n",
+        "\n",
+        "plural = \"maraṅgaḷ\"\n",
+        "accusative = \"marattai\"\n",
+        "plural_accusative = \"maraṅgaḷai\"\n",
+        "\n",
+        "print(\"Root Word:\", word)\n",
+        "print(\"Plural:\", plural)\n",
+        "print(\"Accusative:\", accusative)\n",
+        "print(\"Plural Accusative:\", plural_accusative)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tebYxbB8DsAz",
+        "outputId": "d97c973d-64d8-4c09-aace-1a897df74e83"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Root Word: maram\n",
+            "Plural: maraṅgaḷ\n",
+            "Accusative: marattai\n",
+            "Plural Accusative: maraṅgaḷai\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q10. Derivational Word Generator"
+      ],
+      "metadata": {
+        "id": "hfyifyXtD0Pk"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [\n",
+        "    \"un\" + \"lock\" + \"able\",\n",
+        "    \"happi\" + \"ness\",\n",
+        "    \"employ\" + \"ment\",\n",
+        "    \"modern\" + \"ize\",\n",
+        "    \"re\" + \"writ\" + \"ing\"\n",
+        "]\n",
+        "\n",
+        "for word in words:\n",
+        "    print(word)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-Om0vmvMD08i",
+        "outputId": "984355ec-a9d6-4730-848f-5ae3be6ce005"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "unlockable\n",
+            "happiness\n",
+            "employment\n",
+            "modernize\n",
+            "rewriting\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "UNIT 3 – MORPHOLOGY\n"
+      ],
+      "metadata": {
+        "id": "mZJL089KEMyi"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "\n",
+        "Q11. Morpheme Segmentation"
+      ],
+      "metadata": {
+        "id": "XA1Yw_h8EPPZ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = {\n",
+        "    \"unhappiness\": [\"un\", \"happy\", \"ness\"],\n",
+        "    \"teachers\": [\"teach\", \"er\", \"s\"],\n",
+        "    \"disestablishment\": [\"dis\", \"establish\", \"ment\"],\n",
+        "    \"internationalization\": [\"inter\", \"nation\", \"al\", \"ize\", \"ation\"]\n",
+        "}\n",
+        "\n",
+        "for word, parts in words.items():\n",
+        "    print(word, \"->\", \" + \".join(parts))\n",
+        "    print(\"Morphemes:\", len(parts))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vqCfS2T9ERCC",
+        "outputId": "7f1811e5-6f1d-4443-c172-61a68cb41e0a"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "unhappiness -> un + happy + ness\n",
+            "Morphemes: 3\n",
+            "teachers -> teach + er + s\n",
+            "Morphemes: 3\n",
+            "disestablishment -> dis + establish + ment\n",
+            "Morphemes: 3\n",
+            "internationalization -> inter + nation + al + ize + ation\n",
+            "Morphemes: 5\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q12. Inflection versus Derivation"
+      ],
+      "metadata": {
+        "id": "X1txhEHfFhQB"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = {\n",
+        "    \"walked\": \"Inflection\",\n",
+        "    \"teacher\": \"Derivation\",\n",
+        "    \"dogs\": \"Inflection\",\n",
+        "    \"national\": \"Derivation\",\n",
+        "    \"bigger\": \"Inflection\",\n",
+        "    \"quickly\": \"Derivation\"\n",
+        "}\n",
+        "\n",
+        "for word, category in words.items():\n",
+        "    print(word, \":\", category)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gqIkCNdqFiaI",
+        "outputId": "6512af23-eb64-4be3-ef00-6de1e7483e0d"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "walked : Inflection\n",
+            "teacher : Derivation\n",
+            "dogs : Inflection\n",
+            "national : Derivation\n",
+            "bigger : Inflection\n",
+            "quickly : Derivation\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q13. Stemmer Errors"
+      ],
+      "metadata": {
+        "id": "rtpLe9rWGVkA"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from nltk.stem import PorterStemmer\n",
+        "\n",
+        "stemmer = PorterStemmer()\n",
+        "\n",
+        "words = [\"university\", \"universe\", \"alumnus\", \"alumni\"]\n",
+        "\n",
+        "for word in words:\n",
+        "    print(word, \"->\", stemmer.stem(word))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "M1tgLON0GWnf",
+        "outputId": "4279bcc8-2658-4193-ca57-cd8bdda66caa"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "university -> univers\n",
+            "universe -> univers\n",
+            "alumnus -> alumnu\n",
+            "alumni -> alumni\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q14. Turkish Morphological Segmentation"
+      ],
+      "metadata": {
+        "id": "-e3GQS5KGlJA"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "word = \"evlerimizden\"\n",
+        "\n",
+        "morphemes = [\"ev\", \"ler\", \"imiz\", \"den\"]\n",
+        "\n",
+        "meanings = [\"House\", \"Plural\", \"Our\", \"From\"]\n",
+        "\n",
+        "for m, meaning in zip(morphemes, meanings):\n",
+        "    print(m, \":\", meaning)\n",
+        "\n",
+        "print(\"Complete Meaning: From our houses\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "qWCJSLojGl-v",
+        "outputId": "0134fc6c-002a-4154-d765-4fd1cfc176d5"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "ev : House\n",
+            "ler : Plural\n",
+            "imiz : Our\n",
+            "den : From\n",
+            "Complete Meaning: From our houses\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q15. Ambiguous Morphological Analysis"
+      ],
+      "metadata": {
+        "id": "-pZjE9BfGw63"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "analyses = {\n",
+        "    \"flies\": [\"fly + Noun + Plural\", \"fly + Verb + 3SG\"],\n",
+        "    \"saw\": [\"saw + Noun + Singular\", \"see + Verb + Past\"],\n",
+        "    \"leaves\": [\"leaf + Noun + Plural\", \"leave + Verb + 3SG\"]\n",
+        "}\n",
+        "\n",
+        "for word, meanings in analyses.items():\n",
+        "    print(\"\\nWord:\", word)\n",
+        "    for meaning in meanings:\n",
+        "        print(meaning)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yiIJC66qGxt3",
+        "outputId": "df839e92-df80-47eb-83db-74baf5788600"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Word: flies\n",
+            "fly + Noun + Plural\n",
+            "fly + Verb + 3SG\n",
+            "\n",
+            "Word: saw\n",
+            "saw + Noun + Singular\n",
+            "see + Verb + Past\n",
+            "\n",
+            "Word: leaves\n",
+            "leaf + Noun + Plural\n",
+            "leave + Verb + 3SG\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "UNIT 4 – N-GRAMS"
+      ],
+      "metadata": {
+        "id": "Suexn6FsG_-f"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q16. Building a Bigram Model"
+      ],
+      "metadata": {
+        "id": "ipfNnpTAHA4H"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "unigrams = Counter()\n",
+        "bigrams = Counter()\n",
+        "\n",
+        "for sentence in sentences:\n",
+        "    unigrams.update(sentence[:-1])\n",
+        "    for i in range(len(sentence) - 1):\n",
+        "        bigrams[(sentence[i], sentence[i + 1])] += 1\n",
+        "\n",
+        "def probability(w1, w2):\n",
+        "    return bigrams[(w1, w2)] / unigrams[w1]\n",
+        "\n",
+        "print(\"Unigram Counts:\")\n",
+        "for word in [\"<s>\", \"I\", \"love\", \"NLP\"]:\n",
+        "    print(word, unigrams[word])\n",
+        "\n",
+        "print(\"\\nBigram Counts:\")\n",
+        "for pair in [(\"I\", \"love\"), (\"I\", \"study\"),\n",
+        "             (\"love\", \"NLP\"), (\"love\", \"deep\")]:\n",
+        "    print(pair, bigrams[pair])\n",
+        "\n",
+        "print(\"\\nProbabilities:\")\n",
+        "print(\"P(I|<s>):\", probability(\"<s>\", \"I\"))\n",
+        "print(\"P(love|I):\", probability(\"I\", \"love\"))\n",
+        "print(\"P(NLP|love):\", probability(\"love\", \"NLP\"))\n",
+        "print(\"P(</s>|NLP):\", probability(\"NLP\", \"</s>\"))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "G3T8BRQDHFVv",
+        "outputId": "1ad91119-e5cc-4f74-cb15-942076ec292b"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Unigram Counts:\n",
+            "<s> 4\n",
+            "I 3\n",
+            "love 3\n",
+            "NLP 3\n",
+            "\n",
+            "Bigram Counts:\n",
+            "('I', 'love') 2\n",
+            "('I', 'study') 1\n",
+            "('love', 'NLP') 2\n",
+            "('love', 'deep') 1\n",
+            "\n",
+            "Probabilities:\n",
+            "P(I|<s>): 0.75\n",
+            "P(love|I): 0.6666666666666666\n",
+            "P(NLP|love): 0.6666666666666666\n",
+            "P(</s>|NLP): 1.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q17. Comparing Two Candidate Sentences\n"
+      ],
+      "metadata": {
+        "id": "MvRynB3KHUOu"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "uni = Counter()\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    uni.update(s[:-1])\n",
+        "    for i in range(len(s) - 1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "def score(s):\n",
+        "    p = 1\n",
+        "    for i in range(len(s)-1):\n",
+        "        p *= bi[(s[i], s[i+1])] / uni[s[i]]\n",
+        "    return p\n",
+        "\n",
+        "a = [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"]\n",
+        "b = [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"]\n",
+        "\n",
+        "pa = score(a)\n",
+        "pb = score(b)\n",
+        "\n",
+        "print(\"Sentence A:\", pa)\n",
+        "print(\"Sentence B:\", pb)\n",
+        "print(\"Preferred Sentence:\", \"A\" if pa > pb else \"B\")\n",
+        "print(\"Perplexity A:\", round(pa ** (-1/4), 2))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Kutb50CoHVIf",
+        "outputId": "9ee5a48f-f3a5-48a3-cf31-cbb0620064ed"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Sentence A: 0.3333333333333333\n",
+            "Sentence B: 0.16666666666666666\n",
+            "Preferred Sentence: A\n",
+            "Perplexity A: 1.32\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q18. Zero Probability Problem"
+      ],
+      "metadata": {
+        "id": "ooAph_qqHiKv"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "uni = Counter()\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    uni.update(s[:-1])\n",
+        "    for i in range(len(s)-1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "p = 1\n",
+        "\n",
+        "test = [\"<s>\", \"You\", \"study\", \"NLP\", \"</s>\"]\n",
+        "\n",
+        "for i in range(len(test)-1):\n",
+        "    count = bi[(test[i], test[i+1])]\n",
+        "    if count == 0:\n",
+        "        p = 0\n",
+        "        break\n",
+        "    p *= count / uni[test[i]]\n",
+        "\n",
+        "print(\"Sentence Probability:\", p)\n",
+        "\n",
+        "print(\"\\nWords predicted after love:\")\n",
+        "for word in [\"NLP\", \"deep\"]:\n",
+        "    print(word, \":\", bi[(\"love\", word)] / uni[\"love\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JJ13NUOHHjCG",
+        "outputId": "daa93152-32d5-4669-95f1-a9ccfac95fe0"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Sentence Probability: 0\n",
+            "\n",
+            "Words predicted after love:\n",
+            "NLP : 0.6666666666666666\n",
+            "deep : 0.3333333333333333\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q19. Model Size and Data Sparsity"
+      ],
+      "metadata": {
+        "id": "qjHGgQcRH1Xe"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "v = 20000\n",
+        "tokens = 10000000\n",
+        "\n",
+        "bigrams = v ** 2\n",
+        "trigrams = v ** 3\n",
+        "\n",
+        "fraction = tokens / trigrams\n",
+        "\n",
+        "print(\"Vocabulary Size:\", v)\n",
+        "print(\"Possible Bigrams:\", bigrams)\n",
+        "print(\"Possible Trigrams:\", trigrams)\n",
+        "print(\"Maximum Trigram Fraction:\", fraction)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "J6HrmBluH2MG",
+        "outputId": "8360f92f-d4ec-4461-f7b4-26b8716a9de3"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Vocabulary Size: 20000\n",
+            "Possible Bigrams: 400000000\n",
+            "Possible Trigrams: 8000000000000\n",
+            "Maximum Trigram Fraction: 1.25e-06\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q20. Underflow and Language Identification"
+      ],
+      "metadata": {
+        "id": "vwC4-YnLIFFQ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import math\n",
+        "\n",
+        "probability = 10 ** -4\n",
+        "n = 100\n",
+        "\n",
+        "normal_score = probability ** n\n",
+        "log_score = n * math.log(probability)\n",
+        "\n",
+        "print(\"Normal Probability:\", normal_score)\n",
+        "print(\"Log Probability:\", round(log_score, 2))\n",
+        "\n",
+        "text = \"natural language processing\"\n",
+        "\n",
+        "for i in range(len(text)-2):\n",
+        "    print(text[i:i+3])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LT5E0uOcIF-G",
+        "outputId": "8fa0e262-49cd-444a-a39d-c98cb94d8739"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Normal Probability: 0.0\n",
+            "Log Probability: -921.03\n",
+            "nat\n",
+            "atu\n",
+            "tur\n",
+            "ura\n",
+            "ral\n",
+            "al \n",
+            "l l\n",
+            " la\n",
+            "lan\n",
+            "ang\n",
+            "ngu\n",
+            "gua\n",
+            "uag\n",
+            "age\n",
+            "ge \n",
+            "e p\n",
+            " pr\n",
+            "pro\n",
+            "roc\n",
+            "oce\n",
+            "ces\n",
+            "ess\n",
+            "ssi\n",
+            "sin\n",
+            "ing\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "UNIT 5 – N-GRAM SMOOTHING"
+      ],
+      "metadata": {
+        "id": "dl07anzUIU4d"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q21. Laplace Smoothing"
+      ],
+      "metadata": {
+        "id": "V_WwccuhIVwd"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "uni = Counter()\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    uni.update(s[:-1])\n",
+        "    for i in range(len(s)-1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "V = 8\n",
+        "\n",
+        "def add_one(w1, w2):\n",
+        "    return (bi[(w1, w2)] + 1) / (uni[w1] + V)\n",
+        "\n",
+        "test = [\n",
+        "    (\"<s>\", \"You\"),\n",
+        "    (\"You\", \"study\"),\n",
+        "    (\"study\", \"NLP\"),\n",
+        "    (\"NLP\", \"</s>\")\n",
+        "]\n",
+        "\n",
+        "p = 1\n",
+        "\n",
+        "for w1, w2 in test:\n",
+        "    value = add_one(w1, w2)\n",
+        "    print(w1, w2, \":\", round(value, 4))\n",
+        "    p *= value\n",
+        "\n",
+        "print(\"Sentence Probability:\", round(p, 6))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "H5e5ciTUIZEG",
+        "outputId": "598fc324-3a8f-4077-9b51-d0c51e5074dc"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<s> You : 0.1667\n",
+            "You study : 0.1111\n",
+            "study NLP : 0.2222\n",
+            "NLP </s> : 0.3636\n",
+            "Sentence Probability: 0.001496\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q22. Add-k Smoothing"
+      ],
+      "metadata": {
+        "id": "ET3ckm1RIoRt"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "uni = Counter()\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    uni.update(s[:-1])\n",
+        "    for i in range(len(s)-1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "V = 8\n",
+        "k = 0.1\n",
+        "\n",
+        "def add_k(w1, w2):\n",
+        "    return (bi[(w1, w2)] + k) / (uni[w1] + k * V)\n",
+        "\n",
+        "print(\"P(love|I):\", round(add_k(\"I\", \"love\"), 3))\n",
+        "print(\"P(study|You):\", round(add_k(\"You\", \"study\"), 3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "G0k47mewIpH9",
+        "outputId": "7ef1fef8-64ea-4e9d-c5e4-27931c4fcff8"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "P(love|I): 0.553\n",
+            "P(study|You): 0.056\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q23. Good-Turing Discounting"
+      ],
+      "metadata": {
+        "id": "We2wf9veI3Xl"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    for i in range(len(s)-1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "frequency = Counter(bi.values())\n",
+        "\n",
+        "N1 = frequency[1]\n",
+        "N2 = frequency[2]\n",
+        "N3 = frequency[3]\n",
+        "\n",
+        "print(\"N1:\", N1)\n",
+        "print(\"N2:\", N2)\n",
+        "print(\"N3:\", N3)\n",
+        "\n",
+        "print(\"Unseen Probability:\", round(N1 / sum(bi.values()), 2))\n",
+        "\n",
+        "c1 = 2 * N2 / N1\n",
+        "c2 = 3 * N3 / N2\n",
+        "\n",
+        "print(\"Adjusted Count c*(1):\", round(c1, 2))\n",
+        "print(\"Adjusted Count c*(2):\", round(c2, 2))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "dnfgncclI5-N",
+        "outputId": "b04fc620-4083-4c14-88fb-e402e4554454"
+      },
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "N1: 7\n",
+            "N2: 2\n",
+            "N3: 2\n",
+            "Unseen Probability: 0.41\n",
+            "Adjusted Count c*(1): 0.57\n",
+            "Adjusted Count c*(2): 3.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q24. Interpolation and Backoff"
+      ],
+      "metadata": {
+        "id": "Fs9EepH6JGod"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "uni = Counter()\n",
+        "bi = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    uni.update(s[:-1])\n",
+        "    for i in range(len(s)-1):\n",
+        "        bi[(s[i], s[i+1])] += 1\n",
+        "\n",
+        "total = 17\n",
+        "lam = 0.7\n",
+        "alpha = 0.4\n",
+        "\n",
+        "def interpolation(w1, w2):\n",
+        "    p1 = bi[(w1, w2)] / uni[w1] if uni[w1] else 0\n",
+        "    p2 = uni[w2] / total\n",
+        "    return lam * p1 + (1-lam) * p2\n",
+        "\n",
+        "def backoff(w1, w2):\n",
+        "    if bi[(w1, w2)] > 0:\n",
+        "        return bi[(w1, w2)] / uni[w1]\n",
+        "    return alpha * uni[w2] / total\n",
+        "\n",
+        "print(\"Interpolation love|I:\", round(interpolation(\"I\", \"love\"), 3))\n",
+        "print(\"Interpolation study|You:\", round(interpolation(\"You\", \"study\"), 3))\n",
+        "\n",
+        "print(\"Backoff study|You:\", round(backoff(\"You\", \"study\"), 3))\n",
+        "print(\"Backoff love|I:\", round(backoff(\"I\", \"love\"), 3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "2l-vkOsYJIKO",
+        "outputId": "40234427-9a5c-4c20-95b1-0f57e9c86fcf"
+      },
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Interpolation love|I: 0.52\n",
+            "Interpolation study|You: 0.018\n",
+            "Backoff study|You: 0.024\n",
+            "Backoff love|I: 0.667\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q25. Kneser-Ney Smoothing"
+      ],
+      "metadata": {
+        "id": "FQFW-ZvAJVtt"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "sentences = [\n",
+        "    [\"<s>\", \"I\", \"love\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"love\", \"deep\", \"learning\", \"</s>\"],\n",
+        "    [\"<s>\", \"I\", \"study\", \"NLP\", \"</s>\"],\n",
+        "    [\"<s>\", \"You\", \"love\", \"NLP\", \"</s>\"]\n",
+        "]\n",
+        "\n",
+        "contexts = defaultdict(set)\n",
+        "\n",
+        "for s in sentences:\n",
+        "    for i in range(len(s)-1):\n",
+        "        contexts[s[i+1]].add(s[i])\n",
+        "\n",
+        "total = sum(len(v) for v in contexts.values())\n",
+        "\n",
+        "for word in [\"glasses\", \"Francisco\", \"NLP\", \"love\"]:\n",
+        "    count = len(contexts[word])\n",
+        "    probability = count / total\n",
+        "    print(word, \":\", round(probability, 3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0TZUW7vxJW3k",
+        "outputId": "7c3a2eef-3ddc-40bf-ebe1-f5bf4f34f6d4"
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "glasses : 0.0\n",
+            "Francisco : 0.0\n",
+            "NLP : 0.182\n",
+            "love : 0.182\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "UNIT 6 – POS TAGGING: HIDDEN MARKOV MODEL (HMM)"
+      ],
+      "metadata": {
+        "id": "SufeYaReJmcs"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q26. Training an HMM Tagger"
+      ],
+      "metadata": {
+        "id": "mMo31x2FJn6M"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import Counter, defaultdict\n",
+        "\n",
+        "sentences = [\n",
+        "    [(\"the\", \"D\"), (\"dog\", \"N\"), (\"barks\", \"V\")],\n",
+        "    [(\"a\", \"D\"), (\"cat\", \"N\"), (\"sleeps\", \"V\")],\n",
+        "    [(\"dogs\", \"N\"), (\"bark\", \"V\")],\n",
+        "    [(\"the\", \"D\"), (\"cat\", \"N\"), (\"chases\", \"V\"),\n",
+        "     (\"the\", \"D\"), (\"dog\", \"N\")]\n",
+        "]\n",
+        "\n",
+        "transitions = Counter()\n",
+        "emissions = Counter()\n",
+        "tag_counts = Counter()\n",
+        "\n",
+        "for s in sentences:\n",
+        "    previous = \"<s>\"\n",
+        "\n",
+        "    for word, tag in s:\n",
+        "        transitions[(previous, tag)] += 1\n",
+        "        emissions[(tag, word)] += 1\n",
+        "        tag_counts[tag] += 1\n",
+        "        previous = tag\n",
+        "\n",
+        "    transitions[(previous, \"</s>\")] += 1\n",
+        "\n",
+        "print(\"Transition Probabilities:\")\n",
+        "\n",
+        "for pair in [(\"<s>\", \"D\"), (\"D\", \"N\"),\n",
+        "             (\"N\", \"V\"), (\"V\", \"</s>\")]:\n",
+        "    if pair[0] == \"<s>\":\n",
+        "        total = len(sentences)\n",
+        "    elif pair[1] == \"</s>\":\n",
+        "        total = sum(1 for s in sentences if s[-1][1] == pair[0])\n",
+        "    else:\n",
+        "        total = sum(v for (a, b), v in transitions.items() if a == pair[0])\n",
+        "\n",
+        "    print(pair, \":\", transitions[pair] / total)\n",
+        "\n",
+        "print(\"\\nEmission Probabilities:\")\n",
+        "print(\"P(the|D):\", emissions[(\"D\", \"the\")] / tag_counts[\"D\"])\n",
+        "print(\"P(cat|N):\", emissions[(\"N\", \"cat\")] / tag_counts[\"N\"])\n",
+        "print(\"P(barks|V):\", emissions[(\"V\", \"barks\")] / tag_counts[\"V\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xTh6ik-2Jq4l",
+        "outputId": "782ffb2f-ab46-4d02-929a-6336628df09c"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Transition Probabilities:\n",
+            "('<s>', 'D') : 0.75\n",
+            "('D', 'N') : 1.0\n",
+            "('N', 'V') : 0.8\n",
+            "('V', '</s>') : 1.0\n",
+            "\n",
+            "Emission Probabilities:\n",
+            "P(the|D): 0.75\n",
+            "P(cat|N): 0.4\n",
+            "P(barks|V): 0.25\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q27. Joint Probability of Competing Tag Sequences"
+      ],
+      "metadata": {
+        "id": "3854TxBNJ7QE"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "transitions = {\n",
+        "    (\"<s>\", \"D\"): 0.6,\n",
+        "    (\"D\", \"N\"): 0.9,\n",
+        "    (\"N\", \"V\"): 0.6,\n",
+        "    (\"N\", \"N\"): 0.2\n",
+        "}\n",
+        "\n",
+        "emissions = {\n",
+        "    (\"the\", \"D\"): 0.7,\n",
+        "    (\"dog\", \"N\"): 0.3,\n",
+        "    (\"dog\", \"V\"): 0.01,\n",
+        "    (\"barks\", \"N\"): 0.1,\n",
+        "    (\"barks\", \"V\"): 0.2\n",
+        "}\n",
+        "\n",
+        "p1 = 0.6 * 0.7 * 0.9 * 0.3 * 0.6 * 0.2\n",
+        "p2 = 0.6 * 0.7 * 0.9 * 0.3 * 0.2 * 0.1\n",
+        "\n",
+        "print(\"Probability of D N V:\", p1)\n",
+        "print(\"Probability of D N N:\", p2)\n",
+        "print(\"Preferred Sequence: D N V\")\n",
+        "print(\"Factor:\", p1 / p2)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KOXCeM_dJ8br",
+        "outputId": "48e34e71-442e-44d9-e5e3-c3f420cc4819"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Probability of D N V: 0.013608000000000002\n",
+            "Probability of D N N: 0.0022680000000000005\n",
+            "Preferred Sequence: D N V\n",
+            "Factor: 6.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q28. Viterbi Algorithm"
+      ],
+      "metadata": {
+        "id": "r8wO_HwsKH89"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [\"the\", \"dog\", \"barks\"]\n",
+        "tags = [\"D\", \"N\", \"V\"]\n",
+        "\n",
+        "trans = {\n",
+        "    (\"<s>\", \"D\"): 0.6,\n",
+        "    (\"<s>\", \"N\"): 0.3,\n",
+        "    (\"<s>\", \"V\"): 0.1,\n",
+        "    (\"D\", \"D\"): 0.05,\n",
+        "    (\"D\", \"N\"): 0.9,\n",
+        "    (\"D\", \"V\"): 0.05,\n",
+        "    (\"N\", \"D\"): 0.2,\n",
+        "    (\"N\", \"N\"): 0.2,\n",
+        "    (\"N\", \"V\"): 0.6,\n",
+        "    (\"V\", \"D\"): 0.6,\n",
+        "    (\"V\", \"N\"): 0.3,\n",
+        "    (\"V\", \"V\"): 0.1\n",
+        "}\n",
+        "\n",
+        "emit = {\n",
+        "    (\"the\", \"D\"): 0.7,\n",
+        "    (\"dog\", \"N\"): 0.3,\n",
+        "    (\"dog\", \"V\"): 0.01,\n",
+        "    (\"barks\", \"N\"): 0.1,\n",
+        "    (\"barks\", \"V\"): 0.2\n",
+        "}\n",
+        "\n",
+        "dp = []\n",
+        "path = []\n",
+        "\n",
+        "first = {}\n",
+        "\n",
+        "for tag in tags:\n",
+        "    first[tag] = trans[(\"<s>\", tag)] * emit.get((words[0], tag), 0)\n",
+        "\n",
+        "dp.append(first)\n",
+        "path.append({tag: None for tag in tags})\n",
+        "\n",
+        "for word in words[1:]:\n",
+        "    current = {}\n",
+        "    back = {}\n",
+        "\n",
+        "    for tag in tags:\n",
+        "        values = [\n",
+        "            dp[-1][prev] * trans[(prev, tag)] *\n",
+        "            emit.get((word, tag), 0)\n",
+        "            for prev in tags\n",
+        "        ]\n",
+        "\n",
+        "        best = max(values)\n",
+        "        current[tag] = best\n",
+        "\n",
+        "        if best > 0:\n",
+        "            back[tag] = tags[values.index(best)]\n",
+        "        else:\n",
+        "            back[tag] = None\n",
+        "\n",
+        "    dp.append(current)\n",
+        "    path.append(back)\n",
+        "\n",
+        "best_tag = max(tags, key=lambda t: dp[-1][t])\n",
+        "\n",
+        "result = [best_tag]\n",
+        "\n",
+        "for i in range(len(words)-1, 0, -1):\n",
+        "    best_tag = path[i][best_tag]\n",
+        "    result.append(best_tag)\n",
+        "\n",
+        "result.reverse()\n",
+        "\n",
+        "print(\"Words:\", words)\n",
+        "print(\"Best Tags:\", result)\n",
+        "print(\"Probability:\", dp[-1][result[-1]])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0aTPbP71KJK7",
+        "outputId": "df80099d-e74a-4483-e2bb-78b2c423fc1c"
+      },
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Words: ['the', 'dog', 'barks']\n",
+            "Best Tags: ['D', 'N', 'V']\n",
+            "Probability: 0.013608000000000002\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q29. Viterbi Instead of Brute Force"
+      ],
+      "metadata": {
+        "id": "-WZL9_ouKWQj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "tags = 45\n",
+        "words = 20\n",
+        "\n",
+        "brute_force = tags ** words\n",
+        "viterbi = words * tags ** 2\n",
+        "\n",
+        "print(\"Number of Tags:\", tags)\n",
+        "print(\"Number of Words:\", words)\n",
+        "print(\"Brute Force Sequences:\", brute_force)\n",
+        "print(\"Viterbi Operations:\", viterbi)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8guQnMuNKXmD",
+        "outputId": "f9b0b5e3-5fdd-4529-9e88-34e123c4bc21"
+      },
+      "execution_count": 29,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Number of Tags: 45\n",
+            "Number of Words: 20\n",
+            "Brute Force Sequences: 1159445329576199417209625244140625\n",
+            "Viterbi Operations: 40500\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Q30. Unknown Words and HMM Limitations"
+      ],
+      "metadata": {
+        "id": "eiRUQR_aKl_7"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "training_words = [\n",
+        "    \"the\", \"dog\", \"barks\", \"a\", \"cat\",\n",
+        "    \"sleeps\", \"dogs\", \"bark\", \"chases\"\n",
+        "]\n",
+        "\n",
+        "test_words = [\"the\", \"cats\", \"chase\", \"the\", \"dog\"]\n",
+        "\n",
+        "print(\"Testing Sentence:\")\n",
+        "\n",
+        "for word in test_words:\n",
+        "    if word in training_words:\n",
+        "        print(word, \"-> Known Word\")\n",
+        "    else:\n",
+        "        print(word, \"-> Unknown Word\")\n",
+        "\n",
+        "print(\"\\nUnknown Word Handling:\")\n",
+        "print(\"cats -> Noun (based on suffix -s)\")\n",
+        "print(\"chase -> Verb (based on context)\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kEeiqeJoKnsj",
+        "outputId": "75875e0e-6959-4867-efd4-33af73161d4d"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Testing Sentence:\n",
+            "the -> Known Word\n",
+            "cats -> Unknown Word\n",
+            "chase -> Unknown Word\n",
+            "the -> Known Word\n",
+            "dog -> Known Word\n",
+            "\n",
+            "Unknown Word Handling:\n",
+            "cats -> Noun (based on suffix -s)\n",
+            "chase -> Verb (based on context)\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
